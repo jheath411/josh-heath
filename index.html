@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Josh Heath | Infrastructure & Systems Portfolio</title>
+
+  <meta
+    name="description"
+    content="Infrastructure and systems portfolio of Josh Heath, focused on Linux systems administration, edge infrastructure, manufacturing IT, and operational continuity."
+  >
+
+  <style>
+    :root {
+      --background: #f4f6f8;
+      --surface: #ffffff;
+      --surface-dark: #17212b;
+      --text: #17212b;
+      --muted: #5d6b78;
+      --light-muted: #b8c4ce;
+      --accent: #1d6fa5;
+      --accent-dark: #155579;
+      --border: #dce3e8;
+      --max-width: 1080px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--background);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 22px 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      color: var(--text);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 18px;
+    }
+
+    nav a {
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .hero {
+      padding: 92px 0 86px;
+      background:
+        linear-gradient(135deg, rgba(29, 111, 165, 0.10), transparent 48%),
+        var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    h1 {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 5.7rem);
+    }
+
+    .hero-title {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: var(--accent-dark);
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      font-weight: 650;
+    }
+
+    .location {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .hero-summary {
+      max-width: 780px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 11px 17px;
+      border: 1px solid var(--accent);
+      border-radius: 7px;
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .button.secondary:hover {
+      background: #e8f1f6;
+    }
+
+    main {
+      padding: 70px 0;
+    }
+
+    section {
+      margin-bottom: 72px;
+    }
+
+    .section-label {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+    }
+
+    p {
+      max-width: 780px;
+      margin-top: 0;
+    }
+
+    .panel {
+      padding: 34px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(23, 33, 43, 0.04);
+    }
+
+    .approach-grid,
+    .focus-grid,
+    .metrics {
+      display: grid;
+      gap: 16px;
+    }
+
+    .approach-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .approach-item {
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .approach-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .featured {
+      overflow: hidden;
+      padding: 0;
+      background: var(--surface-dark);
+      color: #ffffff;
+      border: 0;
+    }
+
+    .featured-content {
+      padding: 38px;
+    }
+
+    .featured .section-label {
+      color: #8ec8e8;
+    }
+
+    .featured h2 {
+      max-width: 760px;
+    }
+
+    .featured p {
+      color: #d5e0e7;
+    }
+
+    .featured a {
+      color: #a8ddf8;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 30px 0;
+    }
+
+    .metric {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 9px;
+    }
+
+    .metric-number {
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+      font-size: 1.65rem;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      display: block;
+      color: #c2d2dc;
+      font-size: 0.9rem;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .tag-list li {
+      padding: 8px 12px;
+      color: var(--accent-dark);
+      background: #e7f1f6;
+      border-radius: 999px;
+      font-size: 0.94rem;
+    }
+
+    .confidentiality {
+      color: var(--muted);
+    }
+
+    .contact {
+      background: var(--surface-dark);
+      color: #ffffff;
+    }
+
+    .contact .section-label {
+      color: #8ec8e8;
+    }
+
+    .contact p {
+      color: #d5e0e7;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .contact-links a {
+      color: #a8ddf8;
+    }
+
+    footer {
+      padding: 28px 0 45px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 28px));
+      }
+
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 62px 0;
+      }
+
+      main {
+        padding: 50px 0;
+      }
+
+      section {
+        margin-bottom: 55px;
+      }
+
+      .panel,
+      .featured-content {
+        padding: 25px;
+      }
+
+      .approach-grid,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Josh Heath</a>
+
+      <nav aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#approach">Approach</a>
+        <a href="#work">Featured work</a>
+        <a href="#focus">Focus</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">Infrastructure &amp; Systems Portfolio</p>
+
+      <h1>Production-focused infrastructure built for continuity.</h1>
+
+      <p class="hero-title">
+        Linux Systems Administration&nbsp; • &nbsp;Edge Infrastructure&nbsp; • &nbsp;Manufacturing IT
+      </p>
+
+      <p class="location">Josh Heath · Gallatin, Tennessee</p>
+
+      <p class="hero-summary">
+        Production-focused infrastructure work built around continuity, clear ownership,
+        and systems that remain understandable after the original author is gone.
+      </p>
+
+      <div class="button-row">
+        <a class="button" href="#work">View featured work</a>
+        <a class="button secondary" href="resume.pdf">Download résumé</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="overview">
+      <p class="section-label">Portfolio overview</p>
+      <h2>Infrastructure work under real production constraints.</h2>
+
+      <div class="panel">
+        <p>
+          This portfolio presents selected work in Linux infrastructure, edge systems,
+          and long-term operational reliability. The projects reflect production
+          constraints rather than idealized greenfield environments: mixed hardware
+          generations, long-lived operating-system images, peripheral change,
+          fragmented knowledge, and the need to introduce improvements without
+          interrupting continuous manufacturing operations.
+        </p>
+
+        <p>
+          The principal case study documents primary operational ownership of a
+          150+ device Raspberry Pi fleet supporting MES access, label printing,
+          production displays, operational dashboards, and warehouse terminals
+          across multiple facilities.
+        </p>
+      </div>
+    </section>
+
+    <section id="approach">
+      <p class="section-label">Engineering approach</p>
+      <h2>Practical systems administration with durable outcomes.</h2>
+
+      <div class="approach-grid">
+        <article class="approach-item">
+          <h3>Linux-first operations</h3>
+          <p>
+            Practical use of Ansible, system imaging, staged pilots, rollback baselines,
+            and direct hardware validation.
+          </p>
+        </article>
+
+        <article class="approach-item">
+          <h3>Controlled complexity</h3>
+          <p>
+            Reduction of unnecessary software, services, and operational dependencies
+            where they do not support the required function.
+          </p>
+        </article>
+
+        <article class="approach-item">
+          <h3>Rebuild-based migration</h3>
+          <p>
+            Rebuild-based migration when in-place changes would preserve unreliable
+            assumptions or unsupported platform states.
+          </p>
+        </article>
+
+        <article class="approach-item">
+          <h3>Clear technical boundaries</h3>
+          <p>
+            Clear separation between implemented behavior, proposed architecture,
+            and future validation.
+          </p>
+        </article>
+
+        <article class="approach-item">
+          <h3>Operational documentation</h3>
+          <p>
+            Documentation treated as an operational deliverable and reviewed with the
+            operators, team leaders, and support staff expected to use it.
+          </p>
+        </article>
+
+        <article class="approach-item">
+          <h3>Human-owned automation</h3>
+          <p>
+            Automation and AI-assisted tools used to accelerate analysis and
+            implementation while requirements, architecture, risk, validation,
+            and operational responsibility remain human-owned.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="featured">
+        <div class="featured-content">
+          <p class="section-label">Featured work</p>
+
+          <h2>Legacy Raspberry Pi Infrastructure Stabilization &amp; Platform Migration</h2>
+
+          <p>
+            A redacted production case study covering the recovery, modernization,
+            and ongoing administration of a distributed Linux edge fleet operating
+            continuously in an automotive manufacturing environment.
+          </p>
+
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-number">156</span>
+              <span class="metric-label">active Raspberry Pi devices</span>
+            </div>
+
+            <div class="metric">
+              <span class="metric-number">200+</span>
+              <span class="metric-label">production users supported</span>
+            </div>
+
+            <div class="metric">
+              <span class="metric-number">3</span>
+              <span class="metric-label">hardware generations supported</span>
+            </div>
+          </div>
+
+          <p>
+            The work included Raspberry Pi OS migrations from Jessie to Trixie,
+            Ansible administration across 100+ devices, staged validation,
+            one-device production pilots, 10-device rollout batches, retained
+            rollback images, NOOBS replacement, storage recovery, raw CUPS printing,
+            USB printer migration, physical reliability improvements, and knowledge
+            recovery.
+          </p>
+
+          <a href="legacy-rpi-infrastructure-case-study/">
+            Read the full case study →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="focus">
+      <p class="section-label">Professional focus</p>
+      <h2>Areas of practice</h2>
+
+      <ul class="tag-list">
+        <li>Linux systems administration</li>
+        <li>Edge and constrained systems</li>
+        <li>Configuration management with Ansible</li>
+        <li>OS, hardware, and peripheral migration</li>
+        <li>Manufacturing and warehouse technology</li>
+        <li>Security-conscious operations</li>
+        <li>Documentation and knowledge transfer</li>
+        <li>Lifecycle reliability</li>
+        <li>Operational continuity</li>
+      </ul>
+    </section>
+
+    <section>
+      <p class="section-label">Scope &amp; confidentiality</p>
+      <h2>Publicly shareable, technically substantive work.</h2>
+
+      <div class="panel confidentiality">
+        <p>
+          Public materials are independently written and redacted. They describe
+          technical decisions and outcomes without publishing employer source code,
+          system images, credentials, network identifiers, internal screenshots,
+          production data, or proprietary procedures.
+        </p>
+
+        <p>
+          Device and user counts may be rounded in public versions where additional
+          generalization is appropriate.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-label">Closing note</p>
+      <h2>Infrastructure should remain understandable after change.</h2>
+
+      <div class="panel">
+        <p>
+          The enduring value of infrastructure work is not simply that a system runs
+          today. It is that the system can be understood, repaired, migrated, and
+          operated safely as platforms, personnel, and operational requirements
+          change.
+        </p>
+
+        <p>
+          The work presented here emphasizes that kind of ownership.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="panel contact">
+      <p class="section-label">Contact</p>
+      <h2>Let’s talk about infrastructure that has to keep running.</h2>
+
+      <p>
+        I’m available to discuss Linux administration, edge infrastructure,
+        manufacturing IT, platform migration, and operational reliability.
+      </p>
+
+      <div class="contact-links">
+        <a href="mailto:jheath411@proton.me">jheath411@proton.me</a>
+        <a href="tel:+19317351470">931-735-1470</a>
+        <a href="resume.pdf">Download résumé</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Josh Heath. Infrastructure &amp; Systems Portfolio.</p>
+    </div>
+  </footer>
+</body>
+</html>
