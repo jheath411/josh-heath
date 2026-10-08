@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible Fleet Automation: 150+ Raspberry Pi Devices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            border-bottom: 3px solid #0366d6;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #0366d6;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #0366d6;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .executive-summary {
+            background-color: #f6f8fa;
+            border-left: 4px solid #0366d6;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+
+        .executive-summary p {
+            margin-bottom: 12px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background-color: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            color: #0366d6;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .section-highlight {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tech-stack {
+            background-color: #f6f8fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack ul {
+            margin-left: 25px;
+        }
+
+        .tech-stack li {
+            margin-bottom: 8px;
+        }
+
+        .challenges {
+            margin-bottom: 30px;
+        }
+
+        .challenge-item {
+            background-color: #f6f8fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+
+        .challenge-item h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+
+        .problem {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .resolution {
+            background-color: #dffcf0;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #28a745;
+        }
+
+        .resolution strong {
+            color: #28a745;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #0366d6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Portfolio</a>
+
+        <header>
+            <h1>Ansible Fleet Automation</h1>
+            <p class="subtitle">Standardizing Administration of a 150+ Device Raspberry Pi Fleet</p>
+        </header>
+
+        <section class="executive-summary">
+            <h2 style="margin-top: 0; color: #333; border: none; padding-bottom: 0;">Executive Summary</h2>
+            <p>A fleet of more than 150 Raspberry Pi devices deployed across two production facilities required ongoing maintenance, auditing, provisioning, and troubleshooting. These activities were performed manually through SSH and VNC connections on a device-by-device basis, creating significant operational overhead and increasing the risk of configuration inconsistencies.</p>
+            <p>To address these challenges, an Ansible-based automation platform was implemented using an Ubuntu Server virtual machine as a centralized control node. The solution automated routine maintenance, configuration auditing, and device preparation tasks while reducing dependency on institutional knowledge.</p>
+            <p><strong>The implementation reduced routine maintenance activities from approximately 8-10 hours to 1-2 hours, standardized configuration management across the fleet, and transformed previously undocumented procedures into repeatable and maintainable automation workflows.</strong></p>
+        </section>
+
+        <section class="metrics">
+            <div class="metric-card">
+                <div class="metric-value">80%</div>
+                <div class="metric-label">Maintenance Effort Reduction</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1-2 hrs</div>
+                <div class="metric-label">Audit Time (from multi-day)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">150+</div>
+                <div class="metric-label">Devices Managed</div>
+            </div>
+        </section>
+
+        <h2>Environment Overview</h2>
+        <p>The environment consists of over 150 Raspberry Pi devices deployed across two production facilities located on the same campus. Devices are used in operational workflows and require ongoing maintenance, configuration validation, and periodic replacement due to movement, misuse, or hardware failure.</p>
+        <p>The environment includes:</p>
+        <ul>
+            <li>Multiple Raspberry Pi hardware revisions</li>
+            <li>Multiple Raspberry Pi OS versions</li>
+            <li>Linux-based operating systems</li>
+            <li>Weekly maintenance requirements</li>
+            <li>Frequent device replacement and reconfiguration</li>
+            <li>Specialized production software requiring X11</li>
+        </ul>
+        <p>Due to the dynamic nature of the environment, devices are generally managed in groups of ten. Display-only devices are maintained as a dedicated group due to their unique operational requirements.</p>
+
+        <h2>Problem Statement</h2>
+        
+        <h3>Existing Process</h3>
+        <p>Prior to automation, administrative tasks were performed manually through SSH or VNC sessions on individual devices.</p>
+        <p>Routine maintenance activities included:</p>
+        <ul>
+            <li>Software updates</li>
+            <li>Configuration verification</li>
+            <li>Device troubleshooting</li>
+            <li>Provisioning and deployment preparation</li>
+            <li>Cleanup of unnecessary software packages</li>
+        </ul>
+        <p>Each system required independent administration and validation before work could proceed to the next device.</p>
+
+        <h3>Operational Challenges</h3>
+        <p>Administrative procedures required detailed knowledge of both the operating system and the organization's software stack. Key challenges included:</p>
+        <ul>
+            <li>Device management limited to a single endpoint at a time</li>
+            <li>Configuration procedures dependent on institutional knowledge</li>
+            <li>Increased likelihood of skipped or repeated steps during maintenance</li>
+            <li>Multiple hardware and software versions requiring special attention</li>
+            <li>Frequent device movement and replacement</li>
+            <li>Limited visibility into device configuration status</li>
+        </ul>
+        <p>Knowledge required to maintain the environment was concentrated among a small number of personnel, creating operational risk and limiting scalability.</p>
+
+        <h3>Business Impact</h3>
+        <p>Maintenance activities were performed weekly or monthly and consumed significant technician time. A single device could require several minutes for routine maintenance or multiple hours for troubleshooting and reconfiguration. Auditing often required physical inspection of devices on the production floor, increasing labor requirements and reducing efficiency.</p>
+
+        <h2>Project Objectives</h2>
+        <p>The project was designed to achieve the following objectives:</p>
+        <ul>
+            <li>Reduce manual administrative effort</li>
+            <li>Standardize maintenance procedures</li>
+            <li>Improve configuration visibility</li>
+            <li>Centralize device management</li>
+            <li>Reduce maintenance cycle duration</li>
+            <li>Minimize configuration inconsistencies</li>
+            <li>Reduce dependency on institutional knowledge</li>
+            <li>Create repeatable and documented operational procedures</li>
+        </ul>
+
+        <h2>Solution Design</h2>
+
+        <h3>Technology Selection</h3>
+        <p>Ansible was selected due to its agentless architecture, strong Linux support, and ability to automate administrative tasks across multiple hardware platforms without requiring software installation on managed devices.</p>
+        <p>The platform provided several advantages:</p>
+        <ul>
+            <li>Centralized administration</li>
+            <li>SSH-based communication</li>
+            <li>Repeatable automation workflows</li>
+            <li>Support for heterogeneous Raspberry Pi hardware</li>
+            <li>Secure authentication through SSH key management</li>
+            <li>Reduced risk of human error</li>
+        </ul>
+
+        <h3>Architecture</h3>
+        <p>The solution consists of:</p>
+        <ul>
+            <li>Ubuntu Server virtual machine acting as the Ansible control node</li>
+            <li>SSH-based communication with managed devices</li>
+            <li>Centralized playbook repository</li>
+            <li>Shared SSH key authentication</li>
+            <li>Audit log generation</li>
+        </ul>
+        <p>By hosting Ansible on a virtual machine rather than a Raspberry Pi, the management platform became more reliable and easier to maintain.</p>
+
+        <h3>Inventory Management</h3>
+        <p>Due to the frequent movement and replacement of devices, static inventory assignments are not practical. A master list of device IP addresses is maintained and periodically scanned. Reachable devices are identified through network testing and used to generate an inventory file for playbook execution. Devices are organized into operational groups of ten to allow maintenance activities to be performed in controlled batches.</p>
+
+        <h2>Implementation Process</h2>
+
+        <h3>Phase 1: Proof of Concept</h3>
+        <p>Initial testing was performed using a headless Raspberry Pi as the Ansible control node. While functionally successful, operational concerns including hardware reliability, physical access requirements, and network management limitations made the approach unsuitable for long-term deployment.</p>
+
+        <h3>Phase 2: Infrastructure Migration</h3>
+        <p>An Ubuntu Server virtual machine was provisioned to host Ansible and serve as the centralized management platform. This eliminated dependencies on Raspberry Pi hardware while improving operational reliability.</p>
+
+        <h3>Phase 3: Secure Access Configuration</h3>
+        <p>SSH keys were generated and distributed to managed devices. This enabled passwordless authentication while avoiding the use of shared credentials and reducing administrative overhead.</p>
+
+        <h3>Phase 4: Playbook Development</h3>
+        <p>Three primary playbooks were developed:</p>
+
+        <h4 style="color: #333; font-size: 1.1em; margin-top: 20px; margin-bottom: 12px;">Update Playbook</h4>
+        <p>Automates routine maintenance activities including:</p>
+        <ul>
+            <li><code>apt update</code></li>
+            <li><code>apt upgrade</code></li>
+            <li><code>apt autoclean</code></li>
+            <li><code>apt autoremove</code></li>
+        </ul>
+        <p>The playbook ensures devices remain current while minimizing manual intervention.</p>
+
+        <h4 style="color: #333; font-size: 1.1em; margin-top: 20px; margin-bottom: 12px;">Audit Playbook</h4>
+        <p>Provides remote validation of device configuration. The audit process verifies critical configuration values by examining specific entries within device autostart files to confirm alignment with operational requirements. Audit results are written to administrator-defined log files for review.</p>
+
+        <h4 style="color: #333; font-size: 1.1em; margin-top: 20px; margin-bottom: 12px;">Cleanup Playbook</h4>
+        <p>Executed as part of the device provisioning process prior to deployment. The playbook removes:</p>
+        <ul>
+            <li>Unnecessary applications</li>
+            <li>Unused libraries</li>
+            <li>Unneeded firmware packages</li>
+        </ul>
+        <p>Storage conservation is an important consideration because production workflows rely on local spool files. Excessive storage consumption can prevent devices from processing print jobs and ultimately impact operations.</p>
+
+        <h2>Technical Details</h2>
+        <div class="tech-stack">
+            <h3 style="margin-top: 0;">Control Node</h3>
+            <ul>
+                <li>Ubuntu Server virtual machine</li>
+                <li>Ansible automation platform</li>
+            </ul>
+
+            <h3>Communication Method</h3>
+            <ul>
+                <li>SSH-based management</li>
+                <li>SSH key authentication</li>
+            </ul>
+
+            <h3>Device Organization</h3>
+            <ul>
+                <li>Production devices managed in groups of ten</li>
+                <li>Dedicated group for display-only devices</li>
+            </ul>
+
+            <h3>Documentation</h3>
+            <p>Playbooks are clearly labeled and supported with README documentation providing operational guidance and usage instructions.</p>
+
+            <h3>Logging</h3>
+            <p>Audit results are written to administrator-defined log files. At this stage of the project, execution is actively supervised during runtime, and failures are reviewed manually rather than through centralized automated reporting. Failed devices are skipped and do not interrupt execution of remaining tasks.</p>
+        </div>
+
+        <h2>Challenges and Resolutions</h2>
+        <div class="challenges">
+            <div class="challenge-item">
+                <h3>Challenge 1: Raspberry Pi Control Node Reliability</h3>
+                <div class="problem">
+                    <strong>Problem:</strong> The original plan involved hosting Ansible on a Raspberry Pi. Testing revealed several operational concerns:
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li>Intermittent kernel panics</li>
+                        <li>Inconsistent boot behavior</li>
+                        <li>Dependence on physical access</li>
+                        <li>DHCP-assigned addressing</li>
+                    </ul>
+                    <p style="margin-top: 10px; margin-bottom: 0;">These factors reduced reliability and complicated administration.</p>
+                </div>
+                <div class="resolution">
+                    <strong>✓ Resolution:</strong> The control node was migrated to an Ubuntu Server virtual machine, creating a more stable and maintainable management platform.
+                </div>
+            </div>
+
+            <div class="challenge-item">
+                <h3>Challenge 2: Legacy Package Management</h3>
+                <div class="problem">
+                    <strong>Problem:</strong> Several devices contained outdated packages that prevented successful updates. These issues were not identified during early testing and caused playbook failures during deployment.
+                </div>
+                <div class="resolution">
+                    <strong>✓ Resolution:</strong> Playbooks were modified to account for these package scenarios and ensure updates could proceed successfully.
+                </div>
+            </div>
+
+            <div class="challenge-item">
+                <h3>Challenge 3: Remote Access Compatibility</h3>
+                <div class="problem">
+                    <strong>Problem:</strong> Cleanup testing revealed that removing Raspberry Pi Connect components disrupted RealVNC functionality. Investigation determined that Raspberry Pi Connect relied on Wayland and external account-based services, while the organization's software stack required X11. Because RealVNC operates through X11 and does not introduce subscription requirements, it was selected as the preferred remote access solution.
+                </div>
+                <div class="resolution">
+                    <strong>✓ Resolution:</strong> Devices were standardized on X11 before deployment. This ensured compatibility between production software, remote administration tools, and operating system configuration. The issue was subsequently eliminated from future provisioning activities.
+                </div>
+            </div>
+        </div>
+
+        <h2>Results and Metrics</h2>
+
+        <h3>Maintenance Automation</h3>
+        <p>Routine update activities were reduced from approximately <strong>8-10 hours to 1-2 hours</strong>.</p>
+        <p class="section-highlight"><strong>Result:</strong> Approximately <strong>80% reduction in maintenance effort</strong>.</p>
+
+        <h3>Device Auditing</h3>
+        <p>Auditing previously required technicians to physically inspect devices across the production floor. The process can now be completed remotely in approximately 1-2 hours.</p>
+        <p class="section-highlight"><strong>Result:</strong> Multi-day audit activities reduced to a <strong>centralized and repeatable workflow</strong>.</p>
+
+        <h3>Provisioning Efficiency</h3>
+        <p>Cleanup activities previously required approximately 30 minutes per device. Automation reduced these activities to only a few minutes per device.</p>
+        <p class="section-highlight"><strong>Result:</strong> Significant reduction in provisioning effort and <strong>improved deployment consistency</strong>.</p>
+
+        <h3>Knowledge Transfer</h3>
+        <p>Prior to implementation, maintenance procedures depended on a limited number of personnel with specialized knowledge. Playbooks and supporting documentation transformed these procedures into documented and repeatable operational processes.</p>
+        <p class="section-highlight"><strong>Result:</strong> <strong>Reduced operational risk</strong> and improved maintainability.</p>
+
+        <h3>Standardization</h3>
+        <p>Maintenance activities now execute through validated automation workflows.</p>
+        <p class="section-highlight"><strong>Result:</strong> <strong>Consistent execution</strong> reduced human error, and improved configuration uniformity across the device fleet.</p>
+
+        <h2>Lessons Learned</h2>
+        <p>This project demonstrated that meaningful operational improvements can be achieved through targeted automation of repetitive administrative tasks. Several key lessons emerged:</p>
+        <ul>
+            <li>Automation does not need to be complex to provide significant value.</li>
+            <li>Infrastructure reliability is as important as the automation platform itself.</li>
+            <li>Testing is critical before implementing cleanup and optimization tasks at scale.</li>
+            <li>Hardware and operating system variations require validation before broad deployment.</li>
+            <li>Documentation and automation can effectively reduce dependency on institutional knowledge.</li>
+        </ul>
+
+        <h2>Future Enhancements</h2>
+        <p>Planned improvements include:</p>
+        <ul>
+            <li>Expansion of SSH key deployment across the entire fleet</li>
+            <li>Automated inventory generation</li>
+            <li>Improved device discovery and reporting</li>
+            <li>Enhanced failure logging and alerting</li>
+            <li>Network configuration management through Ansible</li>
+            <li>Automated DNS and IP configuration updates</li>
+            <li>Further standardization of provisioning workflows</li>
+        </ul>
+
+        <footer>
+            <p>Case Study: Ansible Fleet Automation | Josh Heath Portfolio</p>
+        </footer>
+    </div>
+</body>
+</html>
