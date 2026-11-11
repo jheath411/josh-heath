@@ -1,79 +1,89 @@
 # Ansible Print Queue Playbook README
 
-Document Title: Ansible printqueue.yml README  
-Version: 1.0  
-Author: Joshua Heath  
-Environment: Production Manufacturing Floor & Office/Lab  
-Related Systems: Raspberry Pi OS, Ansible, CUPS  
-Classification: Sanitized Portfolio
+**Document Title:** Ansible printqueue.yml README  
+**Version:** 1.0  
+**Author:** Joshua Heath  
+**Environment:** Production Manufacturing Floor & Office/Lab  
+**Related Systems:** Raspberry Pi OS, Ansible, CUPS  
+**Classification:** Sanitized Portfolio
+
+## Summary
+
+This playbook automates the cleanup of stale CUPS printer queues and the assignment of a new RAW CUPS output queue. It identifies the unique USB device ID of the connected printer and binds it to a standardized queue name, providing consistent, serial-aware printing without manual `lpadmin` intervention.
+
+The result is faster printer replacement and lower operational risk. Printer changeout and configuration time drops from roughly 10–15 minutes to under 5 minutes, reducing the chance of human error and limiting disruption to production and shipping workflows.
 
 ## 1. Purpose
 
-Overview: This playbook automates the cleanup of stale CUPS printer queues and the dynamic assignment of a new RAW CUPS outqueue. It acquires the unique USB device ID of the attached printer and binds it to a standardized queue name, ensuring reliable, serial-aware printing without manual lpadmin intervention.
+### Overview
+This playbook is designed to standardize printer configuration on Raspberry Pi-based edge devices in production environments. It removes legacy or stale CUPS queues, detects the active USB printer, and creates a single stable queue bound to the correct device URI.
 
-Business Impact: Reduces physical printer replacement and configuration time from 10 to 15 minutes to under 5 minutes. This streamlined, deterministic process minimizes the risk of human error and prevents interruptions to continuous production line workflows and warehouse shipping operations.
+### Business Impact
+- Lowers printer replacement time from 10–15 minutes to under 5 minutes
+- Reduces the risk of configuration drift and operator error
+- Prevents queue conflicts that can interrupt production and shipping workflows
+- Supports deterministic printer behavior across similar field devices
 
 ## 2. Prerequisites
 
-Before executing this playbook, ensure the following conditions are met:
+### Ansible environment
+- Ansible version: current stable release using standard `ansible.builtin` modules
+- Inventory: a valid `inventory.ini` file with target device entries and a maintained backup list
+- Collections: no external Ansible Galaxy collections required
 
-### Ansible Environment
-- Ansible Version: Current stable release (playbook uses standard ansible.builtin modules).
-- Inventory: A valid inventory.ini file containing the target device(s), alongside a maintained backup master list.
-- Collections: No external Ansible Galaxy collections are required; it relies entirely on core modules.
+### Target system requirements
+- OS: Raspberry Pi OS (Bookworm 64-bit baseline)
+- Required package: `cups` installed and active
+- Required services: `cups`, `sshd`, `vnc`, and `xinetd` (legacy LPD support) enabled and running
 
-### Target System Requirements
-- OS: Raspberry Pi OS (Bookworm 64-bit baseline).
-- Pre-installed Packages: cups must be installed and active.
-- Active Services: cups, sshd, vnc, and xinetd (for legacy LPD support) must be enabled and running.
-
-### Access & Network
-- Credentials: Standard defined user credentials, plus sudo privileges (required for --ask-become-pass).
-- Network Connectivity: The Ansible control node must have network reachability to the target device on TCP ports 22 (SSH), 5900 (VNC), and 515 (LPD).
+### Access and network
+- Credentials: standard user credentials with `sudo` privileges and `--ask-become-pass`
+- Connectivity: reachability from the Ansible control node to the target device on TCP ports 22 (SSH), 5900 (VNC), and 515 (LPD)
 
 ### Hardware
-- Device: Technically agnostic to the printer brand, provided the device supports RAW printing over USB. (Currently deployed with Honeywell/Intermec devices).
+- Device type: any printer that supports RAW printing over USB
+- Current deployment: Honeywell/Intermec devices such as PM43, PM45, and PX4i families
 
 ## 3. Variables
 
-The following variables are defined at the top of the playbook and can be overridden via the command line or inventory if necessary.
+The following variables are defined at the top of the playbook and may be overridden at runtime.
 
-### printer_name
-- Purpose: Defines the standardized CUPS outqueue name.
-- Default: [Sanitized_Queue_Name]
-- When to change: Override this via -e if the specific station requires a unique queue name that deviates from the standard.
-- Constraints: Must match the outqueue name expected by the upstream ERP system.
+### `printer_name`
+- **Purpose:** defines the standardized CUPS output queue name
+- **Default:** `[Sanitized_Queue_Name]`
+- **When to change:** override with `-e` when a station requires a queue name different from the standard
+- **Constraint:** must match the queue name expected by the upstream ERP system
 
-### duplicate_queues
-- Purpose: A list of legacy or stale queue names to actively purge before creating the new queue, preventing routing conflicts.
-- Default: ['PM45-203', 'PM43-203', '[Sanitized_Queue_Name]']
-- When to change: Update this list if new legacy queue naming conventions are discovered during hardware audits.
+### `duplicate_queues`
+- **Purpose:** list of stale or legacy queue names to remove before creating the active queue
+- **Default:** `['PM45-203', 'PM43-203', '[Sanitized_Queue_Name]']`
+- **When to change:** update when additional legacy naming schemes are discovered during hardware audits
 
-### report_file
-- Purpose: The local path on the Ansible control node where the post-execution audit report is appended.
-- Default: ./printer-report.txt
-- When to change: Change this path if running the playbook from a different working directory or integrating with a centralized logging directory.
+### `report_file`
+- **Purpose:** local path on the control node where the execution report is appended
+- **Default:** `./printer-report.txt`
+- **When to change:** update when running from a different working directory or centralized log path
 
 ## 4. Usage
 
-This playbook is designed to be executed from the Ansible control node where the inventory.ini file resides.
+This playbook is intended to run from the Ansible control node where `inventory.ini` is maintained.
 
-### Standard Execution (Single Device)
-To target a specific device safely, always use the --limit flag alongside --ask-become-pass to elevate privileges for CUPS configurations.
+### Single-device execution
+Use `--limit` with `--ask-become-pass` to target a specific device safely:
 
 ```bash
 ansible-playbook printqueue.yml --ask-become-pass --limit 'IP_Address'
 ```
 
-### Standard Execution (Multiple Specific Devices)
-If replacing printers at multiple stations simultaneously, you may target a comma-separated list or an Ansible group, but never run this against all hosts indiscriminately.
+### Multiple-device execution
+For several stations, target a comma-separated list or Ansible group:
 
 ```bash
 ansible-playbook printqueue.yml --ask-become-pass --limit 'IP_Address_1,IP_Address_2,IP_Address_3'
 ```
 
-### Overriding Variables
-If a specific station requires a non-standard queue name, pass it at runtime:
+### Overriding variables
+If a specific station requires a custom queue name:
 
 ```bash
 ansible-playbook printqueue.yml --ask-become-pass --limit 'IP_Address' -e "printer_name=CUSTOM_QUEUE_NAME"
@@ -81,12 +91,13 @@ ansible-playbook printqueue.yml --ask-become-pass --limit 'IP_Address' -e "print
 
 ## 5. Expected Output
 
-A successful playbook execution displays:
-- A PLAY RECAP with 0 failed tasks.
-- Skipped tasks may appear if no duplicate queues were detected (this is expected and correct behavior).
-- The printer report is appended to ./printer-report.txt on the Ansible control node.
+A successful execution should produce:
+- `PLAY RECAP` with 0 failed tasks
+- Optional skipped tasks when no duplicate queues are found
+- An appended audit report in `./printer-report.txt`
 
-### Sample Report Output
+### Sample report output
+
 ```text
 ============================================================
 Inventory Name : [TARGET_IP_ADDRESS]
@@ -99,26 +110,28 @@ LPD Listener: Enabled
 
 ## 6. Troubleshooting
 
-### Common Failure Scenarios
+### Scenario 1: No USB printer is detected
+**Investigation**
+- Log in to the target device and run `lsusb -v`
+- Run `lpinfo -v`
+- Confirm the printer is powered on and physically connected
 
-#### Scenario 1: Playbook fails at "Determine first USB printer URI" or "Fail when no USB printer is detected"
-Investigation:
-- SSH into the target device and run: `lsusb -v`
-- Run: `lpinfo -v`
-- Verify the printer is physically connected and powered on.
+**Resolution**
+- Check USB seating on both the printer and Raspberry Pi ends
+- Try a different USB port on the Pi
+- Replace damaged USB cables
+- Verify printer compatibility with the supported device family
 
-Resolution:
-- Check USB cable seating at both the printer and Raspberry Pi ends.
-- Try a different USB port on the Raspberry Pi.
-- Replace the USB cable if damaged.
-- Verify the printer model is supported (e.g., Honeywell/Intermec PM43, PM45, or PX4i).
+### Scenario 2: More than one USB printer is connected
+**Investigation**
+- Run `lpinfo -v | grep 'usb://'`
+- Review connected devices for multiple USB printer mappings
 
-#### Scenario 2: Playbook identifies more than one printer attached
-Investigation:
-- Run: `lpinfo -v | grep 'usb://'`
-- Check for multiple USB printers connected to the device.
+**Resolution**
+- Remove non-production or test devices
+- Ensure only the target production printer remains attached during configuration
+- If multi-printer support is required, modify the playbook to handle more than one queue
 
-Resolution:
-- Disconnect any non-production or test printers.
-- The playbook uses the first detected USB printer URI; ensure only the target production printer is connected during configuration.
-- If multiple printers are genuinely required at this station, this playbook must be modified to handle multi-queue configurations.
+## 7. Operational Notes
+
+This playbook is intended to be deterministic and repeatable. It should be used only after validating the target device, confirming the correct printer is attached, and ensuring the queue name matches upstream operational requirements.
